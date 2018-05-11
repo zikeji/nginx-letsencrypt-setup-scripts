@@ -1,0 +1,22 @@
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        include snippets/letsencrypt.conf;
+
+        location / {
+                return 401;
+        }
+}
+
+server {
+        listen 443 http2 ssl default_server;
+        listen [::]:443 http2 ssl default_server;
+
+        include snippets/ssl.conf;
+
+        ssl_certificate /etc/nginx/ssl/nginx.crt;
+        ssl_certificate_key /etc/nginx/ssl/nginx.key;
+
+        return 401;
+}

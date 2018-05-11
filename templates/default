@@ -1,0 +1,26 @@
+server {
+	server_name [DOMAIN];
+	listen [::]:80;
+	listen 80;
+
+	include snippets/letsencrypt.conf;
+
+	location / {
+		return 301 https://$server_name$request_uri;
+	}
+}
+
+server {
+	server_name [DOMAIN];
+	listen [::]:443 http2 ssl;
+	listen 443 http2 ssl;
+
+	ssl_certificate /etc/letsencrypt/live/[DOMAIN]/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/[DOMAIN]/privkey.pem;
+
+	include snippets/ssl.conf;
+
+	location / {[EXTRA]
+		proxy_pass [HOST];
+	}
+}
